@@ -73,54 +73,30 @@ function Display(canvasID){
 		for (i=0; i<this.cols; i++){
 // slice off the each column of values
 			binary_string = glcd.stateBuffer.slice(i*this.rows, (i*this.rows)+this.rows).join("");
-			if(this.rows > 8){
-// get the first 8 bits
-				binary_string = binary_string.slice(0, 8);
-			} else {
-				while(binary_string.length < 8){
+
+				while(binary_string.length < 8 * Math.ceil(this.rows / 8)){
 // pad with zeros if it's less than 8 bits in length
 					binary_string += "0";
 				}
-			}
 			if (this.encodeAsBitmap){
 // reverse the bit order
 				binary_string = binary_string.split("").reverse().join("");
 			}
 // translate to hex
-			hex_string = parseInt(binary_string, 2).toString(16); 
-			while(hex_string.length < 2){
-// format the hex string to something usable in a sketch
-				hex_string = "0" + hex_string;
+			for(j = 0; j < Math.ceil(this.rows / 8); j++){
+				hex_string = parseInt(binary_string.substring(j*8,j*8+8), 2).toString(16); 
+					while(hex_string.length < 2 ){
+					hex_string = "0" + hex_string;
+				}
+				col_values.push("0x" + hex_string + ",");
 			}
-// push to the output array
-			col_values.push("0x" + hex_string + ",");
+			
+
+			
 		}
 
 // repeat the above for each page (set of 8 rows)
 
-		if (this.numPages > 1){
-			for (j=1; j<this.numPages; j++){
-				col_values.push("<br/><br/>");
-				for (i=0; i<this.cols; i++){
-
-					binary_string = glcd.stateBuffer.slice(i*this.rows, (i*this.rows) + this.rows).join("");
-					binary_string = binary_string.slice(8*j, 8*j + 8);
-					while(binary_string.length < 8){
-						binary_string += "0";
-					}
-
-					if (this.encodeAsBitmap){
-						binary_string = binary_string.split("").reverse().join("");
-					}
-
-					hex_string = parseInt(binary_string, 2).toString(16); 
-					while(hex_string.length < 2){
-						hex_string = "0" + hex_string;
-					}
-					col_values.push("0x" + hex_string + ",");
-				}
-			}
-		}
 
 // return a string of all hex values
 

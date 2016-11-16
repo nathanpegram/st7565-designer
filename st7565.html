@@ -183,7 +183,7 @@
 			$(this).val('64');
 		}
 		glcd.rows = value;
-		glcd.numPages = Math.ceil(glcd.rows/8);
+		glcd.numPages = Math.ceil(1);
 		glcd.ctx.canvas.height = value * glcd.pixelSize;
 		glcd.h = glcd.ctx.canvas.height;
 		glcd.clear();
