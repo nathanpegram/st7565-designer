@@ -11,7 +11,7 @@ function Display(canvasID){
 	this.stateBuffer = [];
 	this.previousStates = [];
 	this.color = "black";
-	this.numPages = Math.ceil(this.rows/8);
+	this.numPages = 1;
 	this.lastPoint = {row: 0, col: 0};
 	this.editable = false;
 	this.showGrid = true;
