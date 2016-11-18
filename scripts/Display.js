@@ -67,7 +67,7 @@ function Display(canvasID){
 // translate the bits in the buffer to 8bit hex values, organized in 8bit pages
 
 		var col_values = [];
-		var hex_string, binary_string;
+		var hex_string, binary_string, byte_string;
 		var i, j;
 
 		for (i=0; i<this.cols; i++){
@@ -78,14 +78,21 @@ function Display(canvasID){
 // pad with zeros if it's less than 8 bits in length
 					binary_string += "0";
 				}
-			if (this.encodeAsBitmap){
-// reverse the bit order
-				binary_string = binary_string.split("").reverse().join("");
-			}
+
 // translate to hex
-			for(j = 0; j < Math.ceil(this.rows / 8); j++){
-				hex_string = parseInt(binary_string.substring(j*8,j*8+8), 2).toString(16); 
-					while(hex_string.length < 2 ){
+			for(j = 0; j < Math.ceil(this.rows / 8); j++)
+			{
+				byte_string = binary_string.substring(j*8,j*8+8);
+				
+				if(this.encodeAsBitmap)
+				{//reverse
+					byte_string = byte_string.split("").reverse().join("");
+				}
+
+				hex_string = parseInt(byte_string, 2).toString(16);
+				
+				while(hex_string.length < 2 )
+				{
 					hex_string = "0" + hex_string;
 				}
 				col_values.push("0x" + hex_string + ",");
